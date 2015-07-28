@@ -1,4 +1,4 @@
-#!/system/bin/sh
+#!/system/xbin/bash
 
 if [ -x /system/xbin/busybox ]; then
    busybox=/system/xbin/busybox
@@ -307,5 +307,17 @@ else
 
 		if [ "$1" == "kalimenu" ]; then
 			$busybox chroot $mnt /usr/bin/kalimenu
+		fi
+
+		#APT-GET
+		#Example: bootkali apt-get install "package-name package2"
+		#Packages don't have to be in quotes but it doesn't hurt
+
+		if [ "$1" == "apt-get" ] && [ "$2" == "install" ]; then
+				for packages in "${@:3}";
+				do
+					$busybox chroot $mnt /usr/bin/apt-get update
+					$busybox chroot $mnt /usr/bin/apt-get -y install "$packages"
+				done
 		fi
 fi
